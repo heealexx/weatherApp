@@ -1,7 +1,9 @@
 import partlycloudydayicon from "./images/partlycloudydayicon.svg";
 import cloudyicon from "./images/cloudy.svg";
 import overcastIcon from "./images/overcast.svg";
-import overcast from "./images/overcast.jpg";
+import mistIcon from "./images/mist.svg";
+import sunnyIcon from "./images/sunny.svg";
+import rainIcon from "./images/rainy.svg";
 
 const degreeSymbol = "\u00B0";
 
@@ -10,8 +12,8 @@ export function createForecastCards(forecastData){
     const code = data.day.condition.code;
     const date = data.date;
     const condition = data.day.condition.text;
-    const low = data.day.mintemp_f;
-    const high = data.day.maxtemp_f;
+    const low = Math.round(data.day.mintemp_f) + degreeSymbol;
+    const high = Math.round(data.day.maxtemp_f) + degreeSymbol;
 
     const card = document.createElement("div");
     card.classList.add("forecast-card");
@@ -24,7 +26,28 @@ export function createForecastCards(forecastData){
     const iconBox = document.createElement("div");
     iconBox.classList.add("icon-box");
     const icon = document.createElement("img");
-    icon.src = partlycloudydayicon;
+    let iconURL;
+    switch (code){
+      case 1000:
+        iconURL = sunnyIcon;
+        break;
+      case 1003:
+        iconURL = partlycloudydayicon;
+        break;
+      case 1006:
+        iconURL = cloudyicon;
+        break;
+      case 1009:
+        iconURL = overcastIcon;
+        break;
+      case 1189:
+        iconURL = rainIcon;
+        break;
+      case 1030:
+        iconURL = mistIcon;
+        break;
+    }
+    icon.src = iconURL;
     iconBox.append(icon);
     leftDiv.append(iconBox);
 
@@ -64,19 +87,34 @@ export function changeBackground(data){
   const day = data.current.is_day;
 
   switch(data.current.condition.code){
+    case 1000:
+      if (day){
+        app.className = "day1000";
+      }else {
+        app.className = "night1000";
+      }
+      break;
     case 1003:
+    case 1006:
       if (day){
         app.className = "partlycloudyday";
       }else{
         app.className = "partlycloudynight";
       }
       break;
-    case 1006:
-      app.className = "partlycloudynight";
-      break;
     case 1009:
-      app.className = "overcastDay";
+      if (day){
+        app.className = "overcastDay";
+      }else{
+        app.className = "partlycloudynight";
+      }
       break;
+    case 1030:
+      if (day){
+        app.className = "mistDay";
+      }else{
+        app.className = "mistNight";
+      }
   }
 }
 
@@ -100,9 +138,12 @@ export function updateHourlyForecast(hourlyArr){
     const timeText = document.createElement("p");
     timeText.textContent = time;
     const condition = dayForecast.condition.code;
-    const avgTemp = dayForecast.temp_f;
+    const avgTemp = Math.round(dayForecast.temp_f) + degreeSymbol;
     let iconURL;
     switch (condition){
+      case 1000:
+        iconURL = sunnyIcon;
+        break;
       case 1003:
         iconURL = partlycloudydayicon;
         break;
@@ -112,6 +153,9 @@ export function updateHourlyForecast(hourlyArr){
       case 1009:
         iconURL = overcastIcon;
         break;  
+      case 1030:
+        iconURL = mistIcon;
+        break;
     }
     
     const hourDiv = document.createElement("div");

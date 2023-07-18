@@ -79,12 +79,20 @@ h1 {
   color: white;
   padding: 25px;
 }
+#topleft p {
+  font-size: 125%;
+}
 
 #right {
   display: flex;
   flex-direction: column;
   color: white;
   align-items: center;
+  padding: 10px;
+  gap: 15px;
+}
+#right input {
+  opacity: .7;
 }
 .location {
   background-color: rgba(255, 255, 255, 0.2);
@@ -141,4 +149,16 @@ h1 {
 }
 .overcastDay {
   background-image: url("./images/overcast.jpg");
+}
+.day1000 {
+  background-image: url("./images/1000day.jpg");
+}
+.night1000 {
+  background-image: url("./images/1000night.jpg");
+}
+.mistDay {
+  background-image: url("./images/mistday.jpg");
+}
+.mistNight {
+  background-image: url("./images/mistnight.jpg");
 }
